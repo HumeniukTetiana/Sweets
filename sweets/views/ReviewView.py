@@ -1,8 +1,9 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 from sweets.serializers.ReviewSerializer import ReviewSerializer
 from sweets.repositories.ReviewRepository import ReviewRepository
+from rest_framework.permissions import IsAuthenticated
 
 repository = ReviewRepository()
 
@@ -21,6 +22,7 @@ def get_review_by_id(request, pk):
     return Response(serializer.data)
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def create_review(request):
     serializer = ReviewSerializer(data=request.data)
     if serializer.is_valid():

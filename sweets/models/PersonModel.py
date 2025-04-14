@@ -1,6 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
-class Person(models.Model): 
+class Person(AbstractUser): 
     first_name = models.CharField('імя', max_length=50)
     last_name = models.CharField('прізвище', max_length=50)
     phone = models.CharField('телефон', max_length=15, null=True, blank=True)

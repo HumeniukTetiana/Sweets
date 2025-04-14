@@ -13,7 +13,8 @@ class Repository:
         except ObjectDoesNotExist:
             return None
 
-    def add(self, instance):
+    def create(self, **kwargs): 
+        instance = self.model(**kwargs)
         instance.save()
         return instance
 

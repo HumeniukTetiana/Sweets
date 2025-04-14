@@ -23,9 +23,16 @@ def get_person_by_id(request, pk):
 @api_view(['POST'])
 def create_person(request):
     serializer = PersonSerializer(data=request.data)
+    
     if serializer.is_valid():
         person = repository.create(**serializer.validated_data)
+        
+        if 'password' in request.data:
+            person.set_password(request.data['password'])  
+            person.save()  
+        
         return Response(PersonSerializer(person).data, status=status.HTTP_201_CREATED)
+    
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['PUT'])
