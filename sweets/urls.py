@@ -21,6 +21,8 @@ from sweets.views import CategoryView, FullOrderView, IngredientView, OrderDetai
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/auth/', include('authentication.urls')),
+    path('product/', include('products.urls')),
+
     
     path('categories/', CategoryView.get_all_categories, name='get_all_categories'),
     path('categories/<int:pk>/', CategoryView.get_category_by_id, name='get_category_by_id'),

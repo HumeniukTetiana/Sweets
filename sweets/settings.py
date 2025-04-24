@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'sweets',
+    'products',
 
     'authentication.apps.AuthenticationConfig',
     'rest_framework',
