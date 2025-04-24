@@ -13,7 +13,6 @@ class FullOrder(models.Model):
         choices=PaymentStatus.choices
     )
     total_amount = models.DecimalField(max_digits=8, decimal_places=1)
-    points_used = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return f"Order {self.pk}"
