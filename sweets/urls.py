@@ -16,12 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from sweets.views import CategoryView, FullOrderView, IngredientView, OrderDetailsView, PersonView, ProductIngredientView, ProductView, ReviewView
+from sweets.views import CategoryView, FullOrderView, IngredientView, OrderDetailsView, PersonView, ProductIngredientView, ProductView, ReviewView, IngredientListView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/auth/', include('authentication.urls')),
     path('product/', include('products.urls')),
+    path('ingredients/list/', IngredientListView.ingredient_list, name='ingredient_list'),
 
     
     path('categories/', CategoryView.get_all_categories, name='get_all_categories'),
