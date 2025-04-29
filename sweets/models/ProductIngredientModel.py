@@ -14,7 +14,6 @@ class ProductIngredient(models.Model):
         return f"{self.ingredient} in {self.product}: {self.quantity_in_grams}g"
 
     def net_price(self):
-
         price_per_kg = self.ingredient.price_per_kg
         quantity_in_kg = self.quantity_in_grams / 1000
         return price_per_kg * quantity_in_kg
