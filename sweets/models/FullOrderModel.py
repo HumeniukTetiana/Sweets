@@ -1,5 +1,6 @@
 from django.db import models
 from sweets.models.PersonModel import Person
+import math
 
 class PaymentStatus(models.TextChoices):
     YES = 'yes', 'Yes'
@@ -16,3 +17,10 @@ class FullOrder(models.Model):
 
     def __str__(self):
         return f"Order {self.pk}"
+
+    def get_total_price(self):
+        total = 0.0
+        for item in self.orderdetails_set.all():
+            total += float(item.price) * item.quantity
+        return float(math.ceil(total))
+

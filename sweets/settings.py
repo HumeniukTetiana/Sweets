@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     'sweets',
     'products',
+    'statistic',
 
     'authentication.apps.AuthenticationConfig',
     'rest_framework',

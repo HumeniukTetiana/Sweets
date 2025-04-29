@@ -23,6 +23,7 @@ urlpatterns = [
     path('api/auth/', include('authentication.urls')),
     path('product/', include('products.urls')),
     path('ingredients/list/', IngredientListView.ingredient_list, name='ingredient_list'),
+    path('statistic/', include('products.urls')),
 
     
     path('categories/', CategoryView.get_all_categories, name='get_all_categories'),

@@ -11,3 +11,18 @@ class Review(models.Model):
     def __str__(self):
         return str(self.pk)
 
+    @property
+    def person_name(self):
+        return self.person.name
+
+    @staticmethod
+    def get_reviews_by_rating(product_id, min_rating):
+        return Review.objects.filter(product_id=product_id, rating__gte=min_rating)
+
+    @staticmethod
+    def get_average_rating(product_id):
+        result = Review.objects.filter(product_id=product_id).aggregate(avg_rating=Avg('rating'))
+        avg_rating = result['avg_rating']
+        if avg_rating is not None:
+            return round(avg_rating, 2)
+        return None
