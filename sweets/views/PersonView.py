@@ -1,10 +1,11 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from sweets.serializers.PersonSerializer import PersonSerializer
-from sweets.repositories.PersonRepository import PersonRepository
+from sweets import serializers
+from sweets import repositories
 
-repository = PersonRepository()
+from sweets.serializers import PersonSerializer
+repository = repositories.PersonRepository
 
 @api_view(['GET'])
 def get_all_people(request):

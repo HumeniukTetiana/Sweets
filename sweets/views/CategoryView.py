@@ -2,10 +2,10 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 
-from sweets.serializers.CategorySerializer import CategorySerializer
-from sweets.repositories.CategoryRepository import CategoryRepository
+from sweets import serializers
+from sweets import repositories
 
-repository = CategoryRepository()
+repository = repositories.CategoryRepository
 
 @api_view(['GET'])
 def get_all_categories(request):

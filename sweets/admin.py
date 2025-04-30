@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Person, Review, Category, FullOrder, Ingredient, OrderDetails, ProductIngredient, Product
-
+from django.contrib.auth.admin import UserAdmin
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -24,7 +24,7 @@ class OrderDetailsAdmin(admin.ModelAdmin):
      
 @admin.register(Person)
 class PersonAdmin(admin.ModelAdmin):
-    list_display = ('id', 'first_name', 'last_name', 'phone', 'email')  
+    list_display = ('id', 'first_name', 'last_name', 'phone', 'email')
 
 
 @admin.register(ProductIngredient)
