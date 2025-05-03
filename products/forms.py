@@ -1,5 +1,5 @@
 from django import forms
-from sweets.models.ProductModel import Product
+from sweets.models import Product
 
 class ProductForm(forms.ModelForm):
     class Meta:

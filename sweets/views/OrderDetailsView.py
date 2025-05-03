@@ -1,10 +1,10 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from sweets import serializers
+from sweets.serializers import OrderDetailsSerializer
 from sweets import repositories
 
-repository = repositories.OrderDetailsRepository
+repository = repositories.OrderDetailsRepository()
 
 @api_view(['GET'])
 def get_all_order_details(request):

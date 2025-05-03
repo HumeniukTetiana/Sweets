@@ -23,8 +23,11 @@ class OrderDetailsAdmin(admin.ModelAdmin):
 
      
 @admin.register(Person)
-class PersonAdmin(admin.ModelAdmin):
-    list_display = ('id', 'first_name', 'last_name', 'phone', 'email')
+class PersonAdmin(UserAdmin):
+    list_display = ('id', 'first_name', 'last_name', 'phone', 'email', 'username')
+    add_fieldsets = UserAdmin.add_fieldsets + (
+        (None, {'fields': ('_phone', 'email', 'first_name', 'last_name')}),
+    )
 
 
 @admin.register(ProductIngredient)

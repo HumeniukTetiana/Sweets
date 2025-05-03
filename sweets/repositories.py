@@ -1,12 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
-from sweets.models.CategoryModel import Category
-from sweets.models.FullOrderModel import FullOrder
-from sweets.models.ReviewModel import Review
-from sweets.models.ProductModel import Product
-from sweets.models.ProductIngredientModel import ProductIngredient
-from sweets.models.PersonModel import Person
-from sweets.models.OrderDetailsModel import OrderDetails
-from sweets.models.IngredientModel import Ingredient
+from sweets.models import Category, FullOrder, Review, Product, ProductIngredient, Person, OrderDetails, Ingredient
 
 class Repository:
     def __init__(self, model):
