@@ -10,7 +10,6 @@ from bokeh.resources import CDN
 
 def dashboard_bokeh(request):
     min_spent = float(request.GET.get("min_spent", 0))
-    min_rating = float(request.GET.get("min_rating", 0))
     params = request.GET.urlencode()
 
     # --- 1. Горизонтальний bar (інгредієнти) ---
@@ -60,7 +59,7 @@ def dashboard_bokeh(request):
     response = requests.get(url)
     df = pd.DataFrame(response.json())
     df["avg_rating"] = pd.to_numeric(df["avg_rating"])
-    df = df[df["avg_rating"] >= min_rating].sort_values("avg_rating", ascending=False)
+    df = df.sort_values(by="avg_rating", ascending=False)
     source5 = ColumnDataSource(df)
     p5 = figure(x_range=list(df['product_name']), height=400, title="Середній рейтинг продуктів (фільтровано)")
     p5.step(x='product_name', y='avg_rating', mode="after", source=source5, line_width=2, color="orange")
@@ -99,6 +98,5 @@ def dashboard_bokeh(request):
         "script5": script5, "div5": div5,
         "script6": script6, "div6": div6,
         "min_spent": min_spent,
-        "min_rating": min_rating,
         "bokeh_resources" : CDN.render(),
     })
