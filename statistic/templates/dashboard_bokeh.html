@@ -1,50 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Dashboard</title>
-    <script src="https://cdn.bokeh.org/bokeh/release/bokeh-3.7.2.min.js"></script>
-    <link href="https://cdn.bokeh.org/bokeh/release/bokeh-3.7.2.min.css" rel="stylesheet" type="text/css">
-
+    <title>Інтерактивні дашборди Bokeh</title>
+    {{ bokeh_resources|safe }}
 </head>
 <body>
-    <h1>Interactive Dashboard</h1>
+    <h1>Дашборд (Bokeh)</h1>
 
-    <div>
-        <h2>Ingredients and Products</h2>
-        {{ script1|safe }}
-        {{ div1|safe }}
-    </div>
+    <form method="get">
+        <fieldset>
+            <legend>Фільтри:</legend>
 
-    <div>
-        <h2>Orders per Person</h2>
-        {{ script2|safe }}
-        {{ div2|safe }}
-    </div>
+            <label>Мін. кількість продуктів на інгредієнт:
+                <input type="range" name="ingredient_min_count" min="0" max="20"
+                       value="{{ ingredient_min_count }}" oninput="this.nextElementSibling.value = this.value">
+                <output>{{ ingredient_min_count }}</output>
+            </label><br><br>
 
-    <div>
-        <h2>Total Spent per Person</h2>
-        {{ script3|safe }}
-        {{ div3|safe }}
-    </div>
+            <label>Сортування замовлень:
+                <select name="order_sort">
+                    <option value="asc" {% if order_sort == 'asc' %}selected{% endif %}>Зростання</option>
+                    <option value="desc" {% if order_sort == 'desc' %}selected{% endif %}>Спадання</option>
+                </select>
+            </label><br><br>
 
-    <div>
-        <h2>Total Quantity Ordered per Product</h2>
-        {{ script4|safe }}
-        {{ div4|safe }}
-    </div>
+            <label>Мін. витрати по особах:
+                <input type="number" name="min_spent" step="50" value="{{ min_spent }}">
+            </label><br><br>
 
-    <div>
-        <h2>Average Product Rating</h2>
-        {{ script5|safe }}
-        {{ div5|safe }}
-    </div>
+            <label>Мін. кількість замовлень по продуктах:
+                <input type="number" name="quantity_min" value="{{ quantity_min }}">
+            </label><br><br>
 
-    <div>
-        <h2>Sales by Category</h2>
-        {{ script6|safe }}
-        {{ div6|safe }}
+            <label>Мін. рейтинг:
+                <input type="number" name="min_rating" step="0.1" value="{{ min_rating }}">
+            </label><br><br>
+
+            <label>Сортування рейтингу:
+                <select name="rating_sort">
+                    <option value="asc" {% if rating_sort == 'asc' %}selected{% endif %}>Зростання</option>
+                    <option value="desc" {% if rating_sort == 'desc' %}selected{% endif %}>Спадання</option>
+                </select>
+            </label><br><br>
+
+            <button type="submit">Оновити графіки</button>
+        </fieldset>
+    </form>
+
+    <div class="dashboard">
+        <div class="plot-block">{{ script1|safe }} {{ div1|safe }}</div>
+        <div class="plot-block">{{ script2|safe }} {{ div2|safe }}</div>
+        <div class="plot-block">{{ script3|safe }} {{ div3|safe }}</div>
+        <div class="plot-block">{{ script4|safe }} {{ div4|safe }}</div>
+        <div class="plot-block">{{ script5|safe }} {{ div5|safe }}</div>
+        <div class="plot-block">{{ script6|safe }} {{ div6|safe }}</div>
     </div>
 </body>
 </html>

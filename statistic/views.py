@@ -97,7 +97,7 @@ def person_total_spent_dashboard(request):
 
     total_spent = orders.groupby('person_id').agg(total_spent=('total_amount', 'sum')).reset_index()
     result = persons.merge(total_spent, left_on='id', right_on='person_id')
-    result = result[result['total_spent'] > 100].sort_values('total_spent', ascending=False)
+    result = result[result['total_spent'] > 0].sort_values('total_spent', ascending=False)
     return Response(result.to_dict(orient='records'))
 
 
@@ -108,7 +108,7 @@ def product_total_quantity_dashboard(request):
 
     quantities = orderdetails.groupby('product_id').agg(total_quantity_ordered=('quantity', 'sum')).reset_index()
     result = products.merge(quantities, left_on='id', right_on='product_id')
-    result = result[result['total_quantity_ordered'] > 1].sort_values('total_quantity_ordered', ascending=False)
+    result = result[result['total_quantity_ordered'] >= 1].sort_values('total_quantity_ordered', ascending=False)
     return Response(result.to_dict(orient='records'))
 
 

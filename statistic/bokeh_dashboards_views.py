@@ -1,64 +1,89 @@
 from bokeh.plotting import figure
 from bokeh.embed import components
 from bokeh.models import ColumnDataSource
+from bokeh.transform import cumsum
+from math import pi
 from django.shortcuts import render
 import pandas as pd
 import requests
+from bokeh.resources import CDN
 
 def dashboard_bokeh(request):
+    min_spent = float(request.GET.get("min_spent", 0))
+    min_rating = float(request.GET.get("min_rating", 0))
+    params = request.GET.urlencode()
 
-    response = requests.get('http://localhost:8000/statistic/ingredients-products-dashboard/')
+    # --- 1. Горизонтальний bar (інгредієнти) ---
+    url = f"http://localhost:8000/statistic/ingredients-products-dashboard/?{params}"
+    response = requests.get(url)
     df = pd.DataFrame(response.json())
-    df = df.sort_values("product_count", ascending=False)
+    df = df.sort_values("product_count", ascending=True)
     source1 = ColumnDataSource(df)
-    p1 = figure(x_range=list(df['ingredient_name']), height=400, title="Кількість продуктів у яких використовується інгредієнт",
-               toolbar_location=None, tools="")
-    p1.vbar(x='ingredient_name', top='product_count', width=0.9, source=source1)
-    p1.xaxis.major_label_orientation = 1
+    p1 = figure(y_range=list(df['ingredient_name']), height=400,
+                title="Кількість продуктів з інгредієнтом", toolbar_location=None)
+    p1.hbar(y='ingredient_name', right='product_count', height=0.7, source=source1)
 
-
-    response = requests.get('http://localhost:8000/statistic/person-orders-dashboard/')
+    # --- 2. Вертикальний bar (замовлення на особу) ---
+    url = f"http://localhost:8000/statistic/person-orders-dashboard/?{params}"
+    response = requests.get(url)
     df = pd.DataFrame(response.json())
     df["full_name"] = (df["first_name"] + " " + df["last_name"]).str.strip()
     source2 = ColumnDataSource(df)
     p2 = figure(x_range=list(df['full_name']), height=400, title="Кількість замовлень на особу")
     p2.vbar(x='full_name', top='order_count', width=0.9, source=source2)
+    p2.xaxis.major_label_orientation = pi/4
 
-
-    response = requests.get('http://localhost:8000/statistic/person-total-spent-dashboard/')
+    # --- 3. Лінійний графік (витрати на особу) ---
+    url = f"http://localhost:8000/statistic/person-total-spent-dashboard/?{params}"
+    response = requests.get(url)
     df = pd.DataFrame(response.json())
-    df = df.sort_values("total_spent", ascending=False)
+    df["total_spent"] = pd.to_numeric(df["total_spent"])
+    df = df[df["total_spent"] >= min_spent].sort_values("total_spent", ascending=False)
     df["full_name"] = (df["first_name"] + " " + df["last_name"]).str.strip()
     source3 = ColumnDataSource(df)
-    p3 = figure(x_range=list(df['full_name']), height=400, title="Сума витрат на особу")
-    p3.vbar(x='full_name', top='total_spent', width=0.9, source=source3)
+    p3 = figure(x_range=list(df["full_name"]), height=400, title="Сума витрат на особу (фільтровано)")
+    p3.line(x='full_name', y='total_spent', line_width=2, source=source3)
+    p3.circle(x='full_name', y='total_spent', size=8, source=source3, color="green")
+    p3.xaxis.major_label_orientation = pi/4
 
-
-    response = requests.get('http://localhost:8000/statistic/product-total-quantity-dashboard/')
+    # --- 4. Точкова діаграма (загальна кількість товарів) ---
+    url = f"http://localhost:8000/statistic/product-total-quantity-dashboard/?{params}"
+    response = requests.get(url)
     df = pd.DataFrame(response.json())
     source4 = ColumnDataSource(df)
     p4 = figure(x_range=list(df['product_name']), height=400, title="Загальна кількість замовленого товару")
-    p4.vbar(x='product_name', top='total_quantity_ordered', width=0.9, source=source4)
-    p4.xaxis.major_label_orientation = 1
+    p4.circle(x='product_name', y='total_quantity_ordered', size=12, source=source4, color="navy", alpha=0.7)
+    p4.xaxis.major_label_orientation = pi/4
 
-
-    response = requests.get('http://localhost:8000/statistic/product-average-rating-dashboard/')
+    # --- 5. Ступінчастий графік (рейтинг продуктів) ---
+    url = f"http://localhost:8000/statistic/product-average-rating-dashboard/?{params}"
+    response = requests.get(url)
     df = pd.DataFrame(response.json())
-    df = df.sort_values("avg_rating", ascending=False)
+    df["avg_rating"] = pd.to_numeric(df["avg_rating"])
+    df = df[df["avg_rating"] >= min_rating].sort_values("avg_rating", ascending=False)
     source5 = ColumnDataSource(df)
-    p5 = figure(x_range=list(df['product_name']), height=400, title="Середній рейтинг продуктів")
-    p5.vbar(x='product_name', top='avg_rating', width=0.9, source=source5)
-    p5.xaxis.major_label_orientation = 1
+    p5 = figure(x_range=list(df['product_name']), height=400, title="Середній рейтинг продуктів (фільтровано)")
+    p5.step(x='product_name', y='avg_rating', mode="after", source=source5, line_width=2, color="orange")
+    p5.xaxis.major_label_orientation = pi/4
 
-
-    response = requests.get('http://localhost:8000/statistic/sales-by-category-dashboard/')
+    # --- 6. Кругова діаграма (продажі по категоріях) ---
+    url = f"http://localhost:8000/statistic/sales-by-category-dashboard/?{params}"
+    response = requests.get(url)
     df = pd.DataFrame(response.json())
     df = df.sort_values("total_sales", ascending=False)
+    df["angle"] = df["total_sales"] / df["total_sales"].sum() * 2 * pi
+    palette = ["#f72585", "#7209b7", "#3a0ca3", "#4361ee", "#4cc9f0"]
+    df["color"] = [palette[i % len(palette)] for i in range(len(df))]
     source6 = ColumnDataSource(df)
-    p6 = figure(x_range=list(df['category_name']), height=400, title="Продажі по категоріях")
-    p6.vbar(x='category_name', top='total_sales', width=0.9, source=source6)
-    p6.xaxis.major_label_orientation = 1
+    p6 = figure(height=400, width=400, title="Продажі по категоріях", toolbar_location=None,
+                tools="hover", tooltips="@category_name: @total_sales")
+    p6.wedge(x=0, y=0, radius=0.4, start_angle=cumsum('angle', include_zero=True),
+             end_angle=cumsum('angle'), line_color="white", fill_color='color',
+             legend_field='category_name', source=source6)
+    p6.axis.visible = False
+    p6.grid.visible = False
 
+    # --- Вбудовування компонентів ---
     script1, div1 = components(p1)
     script2, div2 = components(p2)
     script3, div3 = components(p3)
@@ -73,4 +98,7 @@ def dashboard_bokeh(request):
         "script4": script4, "div4": div4,
         "script5": script5, "div5": div5,
         "script6": script6, "div6": div6,
+        "min_spent": min_spent,
+        "min_rating": min_rating,
+        "bokeh_resources" : CDN.render(),
     })
