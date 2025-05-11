@@ -86,7 +86,7 @@ def person_orders_dashboard(request):
 
     order_counts = orders.groupby('person_id').size().reset_index(name='order_count')
     result = persons.merge(order_counts, left_on='id', right_on='person_id')
-    result = result[result['order_count'] > 1].sort_values('order_count', ascending=False)
+    result = result[result['order_count'] >= 1].sort_values('order_count', ascending=False)
     return Response(result.to_dict(orient='records'))
 
 
@@ -97,7 +97,7 @@ def person_total_spent_dashboard(request):
 
     total_spent = orders.groupby('person_id').agg(total_spent=('total_amount', 'sum')).reset_index()
     result = persons.merge(total_spent, left_on='id', right_on='person_id')
-    result = result[result['total_spent'] > 500].sort_values('total_spent', ascending=False)
+    result = result[result['total_spent'] > 100].sort_values('total_spent', ascending=False)
     return Response(result.to_dict(orient='records'))
 
 
@@ -108,17 +108,17 @@ def product_total_quantity_dashboard(request):
 
     quantities = orderdetails.groupby('product_id').agg(total_quantity_ordered=('quantity', 'sum')).reset_index()
     result = products.merge(quantities, left_on='id', right_on='product_id')
-    result = result[result['total_quantity_ordered'] > 50].sort_values('total_quantity_ordered', ascending=False)
+    result = result[result['total_quantity_ordered'] > 1].sort_values('total_quantity_ordered', ascending=False)
     return Response(result.to_dict(orient='records'))
 
 
 @api_view(['GET'])
 def product_average_rating_dashboard(request):
-    reviews = pd.DataFrame(list(Review.objects.values('product_id', 'rating')))
     products = pd.DataFrame(list(Product.objects.values('id', 'product_name')))
+    reviews = pd.DataFrame(list(Review.objects.values('product', 'rating')))
 
-    avg_ratings = reviews.groupby('product_id').agg(avg_rating=('rating', 'mean')).reset_index()
-    result = products.merge(avg_ratings, left_on='id', right_on='product_id')
+    avg_ratings = reviews.groupby('product').agg(avg_rating=('rating', 'mean')).reset_index()
+    result = products.merge(avg_ratings, left_on='id', right_on='product')
     result = result.sort_values('avg_rating', ascending=False)
     return Response(result.to_dict(orient='records'))
 

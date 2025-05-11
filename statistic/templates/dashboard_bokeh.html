@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Dashboard</title>
+    <script src="https://cdn.bokeh.org/bokeh/release/bokeh-3.7.2.min.js"></script>
+    <link href="https://cdn.bokeh.org/bokeh/release/bokeh-3.7.2.min.css" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+    <h1>Interactive Dashboard</h1>
+
+    <div>
+        <h2>Ingredients and Products</h2>
+        {{ script1|safe }}
+        {{ div1|safe }}
+    </div>
+
+    <div>
+        <h2>Orders per Person</h2>
+        {{ script2|safe }}
+        {{ div2|safe }}
+    </div>
+
+    <div>
+        <h2>Total Spent per Person</h2>
+        {{ script3|safe }}
+        {{ div3|safe }}
+    </div>
+
+    <div>
+        <h2>Total Quantity Ordered per Product</h2>
+        {{ script4|safe }}
+        {{ div4|safe }}
+    </div>
+
+    <div>
+        <h2>Average Product Rating</h2>
+        {{ script5|safe }}
+        {{ div5|safe }}
+    </div>
+
+    <div>
+        <h2>Sales by Category</h2>
+        {{ script6|safe }}
+        {{ div6|safe }}
+    </div>
+</body>
+</html>
