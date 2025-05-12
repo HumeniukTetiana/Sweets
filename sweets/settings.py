@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'sweets',
     'products',
     'statistic',
+    'parallel_db',
 
     'authentication.apps.AuthenticationConfig',
     'rest_framework',

@@ -24,6 +24,7 @@ urlpatterns = [
     path('product/', include('products.urls')),
     path('ingredients/list/', IngredientListView.ingredient_list, name='ingredient_list'),
     path('statistic/', include('statistic.urls')),
+    path('parallel_db/', include('parallel_db.urls')),
 
     path('categories/', CategoryView.get_all_categories, name='get_all_categories'),
     path('categories/<int:pk>/', CategoryView.get_category_by_id, name='get_category_by_id'),

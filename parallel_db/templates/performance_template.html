@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Dashboard</title>
+</head>
+<body>
+    <h1>Тестування продуктивності бази даних</h1>
+
+    <form method="get" action="{% url 'performance_dashboard' %}">
+        <label for="num_requests">Кількість запитів:</label>
+        <input type="number" id="num_requests" name="num_requests" value="{{ num_requests }}" min="1" required>
+        <button type="submit">Виконати тест</button>
+    </form>
+
+    <h2>Таблиця результатів</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Кількість потоків</th>
+                <th>Загальний час (сек.)</th>
+                <th>Середній час на запит (сек.)</th>
+                <th>Макс. використання CPU (%)</th>
+                <th>Макс. використання пам'яті (MB)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr>
+                <td>{{ row.threads_used }}</td>
+                <td>{{ row.total_time }}</td>
+                <td>{{ row.avg_time_per_request }}</td>
+                <td>{{ row.max_cpu_usage }}</td>
+                <td>{{ row.max_memory_usage }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Графік часу на запит за кількістю потоків</h2>
+    <div>
+        {{ graph_html | safe }}
+    </div>
+</body>
+</html>
