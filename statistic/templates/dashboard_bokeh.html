@@ -1,46 +1,46 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Інтерактивні дашборди Bokeh</title>
+    <title>Interactive Bokeh Dashboards</title>
     {{ bokeh_resources|safe }}
 </head>
 <body>
-    <h1>Дашборд (Bokeh)</h1>
+    <h1>Dashboard (Bokeh)</h1>
 
     <form method="get">
         <fieldset>
-            <legend>Фільтри:</legend>
+            <legend>Filters:</legend>
 
-            <label>Мін. кількість продуктів на інгредієнт:
+            <label>Min. number of products per ingredient:
                 <input type="range" name="ingredient_min_count" min="0" max="20"
                        value="{{ ingredient_min_count }}" oninput="this.nextElementSibling.value = this.value">
                 <output>{{ ingredient_min_count }}</output>
             </label><br><br>
 
-            <label>Сортування замовлень:
+            <label>Order sorting:
                 <select name="order_sort">
-                    <option value="asc" {% if order_sort == 'asc' %}selected{% endif %}>Зростання</option>
-                    <option value="desc" {% if order_sort == 'desc' %}selected{% endif %}>Спадання</option>
+                    <option value="asc" {% if order_sort == 'asc' %}selected{% endif %}>Ascending</option>
+                    <option value="desc" {% if order_sort == 'desc' %}selected{% endif %}>Descending</option>
                 </select>
             </label><br><br>
 
-            <label>Мін. витрати по особах:
+            <label>Min. total spending per person:
                 <input type="number" name="min_spent" step="50" value="{{ min_spent }}">
             </label><br><br>
 
-            <label>Мін. кількість замовлень по продуктах:
+            <label>Min. order quantity per product:
                 <input type="number" name="quantity_min" value="{{ quantity_min }}">
             </label><br><br>
 
-            <label>Сортування рейтингу:
+            <label>Rating sorting:
                 <select name="rating_sort">
-                    <option value="asc" {% if rating_sort == 'asc' %}selected{% endif %}>Зростання</option>
-                    <option value="desc" {% if rating_sort == 'desc' %}selected{% endif %}>Спадання</option>
+                    <option value="asc" {% if rating_sort == 'asc' %}selected{% endif %}>Ascending</option>
+                    <option value="desc" {% if rating_sort == 'desc' %}selected{% endif %}>Descending</option>
                 </select>
             </label><br><br>
 
-            <button type="submit">Оновити графіки</button>
+            <button type="submit">Update Charts</button>
         </fieldset>
     </form>
 
