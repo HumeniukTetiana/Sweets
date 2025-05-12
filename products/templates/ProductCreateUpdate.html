@@ -1,7 +1,7 @@
-<h1>{% if is_edit %}Редагувати продукт{% else %}Додати продукт{% endif %}</h1>
+<h1>{% if is_edit %}Update product{% else %}Add product{% endif %}</h1>
 
 <form method="post">
   {% csrf_token %}
   {{ form.as_p }}
-  <button type="submit">Зберегти</button>
+  <button type="submit">Save</button>
 </form>

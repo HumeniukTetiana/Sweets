@@ -1,6 +1,6 @@
-<h1>Солодощі</h1>
+<h1>Sweets</h1>
 
-<a href="{% url 'ProductCreate' %}">Додати новий продукт</a>
+<a href="{% url 'ProductCreate' %}">Add new product</a>
 
 <ul>
   {% for product in products %}
@@ -8,6 +8,6 @@
       <a href="{% url 'ProductDetails' product.id %}">{{ product.product_name }}</a>
     </li>
   {% empty %}
-    <li>Немає товарів</li>
+    <li>No products</li>
   {% endfor %}
 </ul>

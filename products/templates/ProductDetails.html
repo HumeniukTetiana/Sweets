@@ -1,9 +1,9 @@
-<h1>Деталі продукту</h1>
+<h1>Product Details</h1>
 
 <p><strong>Назва:</strong> {{ product.product_name }}</p>
 <p><strong>Опис:</strong> {{ product.product_description }}</p>
 <p><strong>Ціна:</strong> {{ product.price }}</p>
 <p><strong>Категорія:</strong> {{ product.category.category_name }}</p>
 
-<p><a href="{% url 'ProductUpdate' product.id %}">Редагувати</a></p>
-<p><a href="{% url 'ProductList' %}">Повернутися</a></p>
+<p><a href="{% url 'ProductUpdate' product.id %}">Update</a></p>
+<p><a href="{% url 'ProductList' %}">Return</a></p>
