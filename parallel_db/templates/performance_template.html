@@ -1,28 +1,28 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Performance Dashboard</title>
 </head>
 <body>
-    <h1>Тестування продуктивності бази даних</h1>
+    <h1>Database Performance Testing</h1>
 
     <form method="get" action="{% url 'performance_dashboard' %}">
-        <label for="num_requests">Кількість запитів:</label>
+        <label for="num_requests">Number of requests:</label>
         <input type="number" id="num_requests" name="num_requests" value="{{ num_requests }}" min="1" required>
-        <button type="submit">Виконати тест</button>
+        <button type="submit">Run Test</button>
     </form>
 
-    <h2>Таблиця результатів</h2>
+    <h2>Results Table</h2>
     <table border="1">
         <thead>
             <tr>
-                <th>Кількість потоків</th>
-                <th>Загальний час (сек.)</th>
-                <th>Середній час на запит (сек.)</th>
-                <th>Макс. використання CPU (%)</th>
-                <th>Макс. використання пам'яті (MB)</th>
+                <th>Number of Threads</th>
+                <th>Total Time (sec.)</th>
+                <th>Average Time per Request (sec.)</th>
+                <th>Max CPU Usage (%)</th>
+                <th>Max Memory Usage (MB)</th>
             </tr>
         </thead>
         <tbody>
@@ -38,7 +38,7 @@
         </tbody>
     </table>
 
-    <h2>Графік часу на запит за кількістю потоків</h2>
+    <h2>Request Time by Number of Threads Graph</h2>
     <div>
         {{ graph_html | safe }}
     </div>

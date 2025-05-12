@@ -9,16 +9,11 @@ from django.shortcuts import render
 
 
 def db_performance_test(request):
-    # Параметри з GET-запиту
     num_requests = int(request.GET.get('num_requests', 5))
-
-    # Список для кількості потоків, які потрібно перевірити
     num_threads_list = [1, 2, 4, 8, 16]
-
-    url = 'http://localhost:8000/statistic/ingredients-products-dashboard/'  # будь-який API
+    url = 'http://localhost:8000/statistic/ingredients-products-dashboard/'
     all_results = []
 
-    # Функція для виконання запиту
     def make_request():
         start_time = time.time()
         response = requests.get(url)
@@ -31,7 +26,7 @@ def db_performance_test(request):
         memory_usages = []
 
         start_cpu = psutil.cpu_percent(interval=None)
-        start_mem = psutil.virtual_memory().used / (1024 ** 2)  # MB
+        start_mem = psutil.virtual_memory().used / (1024 ** 2)
 
         start_global = time.time()
         with ThreadPoolExecutor(max_workers=num_threads) as executor:
@@ -40,7 +35,6 @@ def db_performance_test(request):
                 try:
                     duration = future.result()
                     results.append(duration)
-                    # Збір поточних метрик
                     cpu_usages.append(psutil.cpu_percent(interval=None))
                     memory_usages.append(psutil.virtual_memory().used / (1024 ** 2))
                 except Exception as e:
@@ -65,7 +59,6 @@ def db_performance_test(request):
             "max_memory_usage": max(memory_usages, default=start_mem),
         }
 
-        # Зберігаємо результати для кожної кількості потоків
         all_results.append(summary)
 
     return JsonResponse(all_results, safe=False)
@@ -74,16 +67,14 @@ def db_performance_test(request):
 def performance_dashboard(request):
     num_requests = int(request.GET.get("num_requests", 5))
 
-    # Запит до API для виконання тесту продуктивності з різними кількостями потоків
     response = requests.get("http://localhost:8000/parallel_db/performance-test/", params={
         "num_requests": num_requests,
     })
 
     data = response.json()
 
-    # Створення графіка
     df = pd.DataFrame(data)
-    fig = px.line(df, x="threads_used", y="total_time", title="Час на запит за кількістю потоків")
+    fig = px.line(df, x="threads_used", y="total_time", title="Request Time by Number of Threads")
     graph_html = fig.to_html(full_html=False)
 
     return render(request, "performance_template.html", {
