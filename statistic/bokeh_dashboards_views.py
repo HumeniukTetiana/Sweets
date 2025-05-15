@@ -1,30 +1,36 @@
-from bokeh.plotting import figure
-from bokeh.embed import components
-from bokeh.models import ColumnDataSource
-from bokeh.transform import cumsum
+import requests
+import pandas as pd
 from math import pi
 from django.shortcuts import render
-import pandas as pd
-import requests
+from bokeh.embed import components
 from bokeh.resources import CDN
+from bokeh.plotting import figure
+from bokeh.models import ColumnDataSource
+from bokeh.transform import cumsum
 
 def dashboard_bokeh(request):
-    min_spent = float(request.GET.get("min_spent", 0))
+    ingredient_min_count = int(request.GET.get("ingredient_min_count", 0))
+    order_sort = request.GET.get("order_sort", "asc")
+    spent_min = float(request.GET.get("spent_min", 0))
+    quantity_min = int(request.GET.get("quantity_min", 0))
+    rating_sort = request.GET.get("rating_sort", "desc")
+
     params = request.GET.urlencode()
 
     url = f"http://localhost:8000/statistic/ingredients-products-dashboard/?{params}"
     response = requests.get(url)
     df = pd.DataFrame(response.json())
+    df = df[df["product_count"] >= ingredient_min_count]
     df = df.sort_values("product_count", ascending=True)
     source1 = ColumnDataSource(df)
-    p1 = figure(y_range=list(df['ingredient_name']), height=400,
-                title="Number of Products per Ingredient", toolbar_location=None)
+    p1 = figure(y_range=list(df['ingredient_name']), height=400, title="Number of Products per Ingredient")
     p1.hbar(y='ingredient_name', right='product_count', height=0.7, source=source1)
 
     url = f"http://localhost:8000/statistic/person-orders-dashboard/?{params}"
     response = requests.get(url)
     df = pd.DataFrame(response.json())
     df["full_name"] = (df["first_name"] + " " + df["last_name"]).str.strip()
+    df = df.sort_values("order_count", ascending=(order_sort == "asc"))
     source2 = ColumnDataSource(df)
     p2 = figure(x_range=list(df['full_name']), height=400, title="Number of Orders per Person")
     p2.vbar(x='full_name', top='order_count', width=0.9, source=source2)
@@ -34,7 +40,7 @@ def dashboard_bokeh(request):
     response = requests.get(url)
     df = pd.DataFrame(response.json())
     df["total_spent"] = pd.to_numeric(df["total_spent"])
-    df = df[df["total_spent"] >= min_spent].sort_values("total_spent", ascending=False)
+    df = df[df["total_spent"] >= spent_min].sort_values("total_spent", ascending=False)
     df["full_name"] = (df["first_name"] + " " + df["last_name"]).str.strip()
     source3 = ColumnDataSource(df)
     p3 = figure(x_range=list(df["full_name"]), height=400, title="Total Spending per Person (Filtered)")
@@ -45,6 +51,7 @@ def dashboard_bokeh(request):
     url = f"http://localhost:8000/statistic/product-total-quantity-dashboard/?{params}"
     response = requests.get(url)
     df = pd.DataFrame(response.json())
+    df = df[df['total_quantity_ordered'] >= quantity_min]
     source4 = ColumnDataSource(df)
     p4 = figure(x_range=list(df['product_name']), height=400, title="Total Quantity of Ordered Products")
     p4.circle(x='product_name', y='total_quantity_ordered', size=12, source=source4, color="navy", alpha=0.7)
@@ -54,7 +61,7 @@ def dashboard_bokeh(request):
     response = requests.get(url)
     df = pd.DataFrame(response.json())
     df["avg_rating"] = pd.to_numeric(df["avg_rating"])
-    df = df.sort_values(by="avg_rating", ascending=False)
+    df = df.sort_values(by="avg_rating", ascending=(rating_sort == "asc"))
     source5 = ColumnDataSource(df)
     p5 = figure(x_range=list(df['product_name']), height=400, title="Average Product Ratings (Filtered)")
     p5.step(x='product_name', y='avg_rating', mode="after", source=source5, line_width=2, color="orange")
@@ -90,6 +97,10 @@ def dashboard_bokeh(request):
         "script4": script4, "div4": div4,
         "script5": script5, "div5": div5,
         "script6": script6, "div6": div6,
-        "min_spent": min_spent,
-        "bokeh_resources" : CDN.render(),
+        "ingredient_min_count": ingredient_min_count,
+        "order_sort": order_sort,
+        "spent_min": spent_min,
+        "quantity_min": quantity_min,
+        "rating_sort": rating_sort,
+        "bokeh_resources": CDN.render(),
     })
