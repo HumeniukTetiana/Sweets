@@ -75,7 +75,7 @@ def ingredients_products_dashboard(request):
 
     grouped = df_links.groupby('ingredient_id').agg(product_count=('product_id', 'nunique')).reset_index()
     merged = df_ingredients.merge(grouped, left_on='id', right_on='ingredient_id')
-    result = merged[merged['product_count'] > 2].sort_values('product_count', ascending=False)
+    result = merged[merged['product_count'] >= 1].sort_values('product_count', ascending=False)
     return Response(result.to_dict(orient='records'))
 
 
