@@ -2,10 +2,10 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 
-from sweets.serializers. FullOrderSerializer import FullOrderSerializer
-from sweets.repositories.FullOrderRepository import FullOrderRepository
+from sweets.serializers import FullOrderSerializer
+from sweets import repositories
 
-repository = FullOrderRepository()
+repository = repositories.FullOrderRepository()
 
 @api_view(['GET'])
 def get_all_orders(request):

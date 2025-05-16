@@ -1,10 +1,10 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from sweets.serializers.ProductIngredientSerializer import ProductIngredientSerializer
-from sweets.repositories.ProductIngredientRepository import ProductIngredientRepository
+from sweets.serializers import ProductIngredientSerializer
+from sweets import repositories
 
-repository = ProductIngredientRepository()
+repository = repositories.ProductIngredientRepository()
 
 @api_view(['GET'])
 def get_all_product_ingredients(request):

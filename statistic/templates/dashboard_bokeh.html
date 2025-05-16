@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Interactive Bokeh Dashboards</title>
+    {{ bokeh_resources|safe }}
+</head>
+<body>
+    <h1>Dashboard (Bokeh)</h1>
+
+    <form method="get">
+        <fieldset>
+            <legend>Filters:</legend>
+
+            <label>Min. number of products per ingredient:
+                <input type="range" name="ingredient_min_count" min="0" max="20"
+                       value="{{ ingredient_min_count }}" oninput="this.nextElementSibling.value = this.value">
+                <output>{{ ingredient_min_count }}</output>
+            </label><br><br>
+
+            <label>Order sorting:
+                <select name="order_sort">
+                    <option value="asc" {% if order_sort == 'asc' %}selected{% endif %}>Ascending</option>
+                    <option value="desc" {% if order_sort == 'desc' %}selected{% endif %}>Descending</option>
+                </select>
+            </label><br><br>
+
+            <label>Min. total spending per person:
+                <input type="number" name="spent_min" step="50" value="{{ spent_min }}">
+            </label><br><br>
+
+            <label>Min. order quantity per product:
+                <input type="number" name="quantity_min" value="{{ quantity_min }}">
+            </label><br><br>
+
+            <label>Rating sorting:
+                <select name="rating_sort">
+                    <option value="asc" {% if rating_sort == 'asc' %}selected{% endif %}>Ascending</option>
+                    <option value="desc" {% if rating_sort == 'desc' %}selected{% endif %}>Descending</option>
+                </select>
+            </label><br><br>
+
+            <button type="submit">Update Charts</button>
+        </fieldset>
+    </form>
+
+    <div class="dashboard">
+        <div class="plot-block">{{ script1|safe }} {{ div1|safe }}</div>
+        <div class="plot-block">{{ script2|safe }} {{ div2|safe }}</div>
+        <div class="plot-block">{{ script3|safe }} {{ div3|safe }}</div>
+        <div class="plot-block">{{ script4|safe }} {{ div4|safe }}</div>
+        <div class="plot-block">{{ script5|safe }} {{ div5|safe }}</div>
+        <div class="plot-block">{{ script6|safe }} {{ div6|safe }}</div>
+    </div>
+</body>
+</html>

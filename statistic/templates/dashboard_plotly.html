@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Plotly Dashboard</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+<h1>Interactive Plotly Dashboard</h1>
+
+<form method="get">
+    <fieldset>
+        <legend>Filters:</legend>
+
+        <label>Min. number of products per ingredient:
+            <input type="range" name="ingredient_min_count" min="0" max="20"
+                   value="{{ ingredient_min_count }}" oninput="this.nextElementSibling.value = this.value">
+            <output>{{ ingredient_min_count }}</output>
+        </label><br><br>
+
+        <label>Order sorting:
+            <select name="order_sort">
+                <option value="asc" {% if order_sort == 'asc' %}selected{% endif %}>Ascending</option>
+                <option value="desc" {% if order_sort == 'desc' %}selected{% endif %}>Descending</option>
+            </select>
+        </label><br><br>
+
+        <label>Min. spending per person:
+            <input type="number" name="spent_min" step="50" value="{{ spent_min }}">
+        </label><br><br>
+
+        <label>Min. number of orders per product:
+            <input type="number" name="quantity_min" value="{{ quantity_min }}">
+        </label><br><br>
+
+        <label>Rating sorting:
+            <select name="rating_sort">
+                <option value="asc" {% if rating_sort == 'asc' %}selected{% endif %}>Lowest</option>
+                <option value="desc" {% if rating_sort == 'desc' %}selected{% endif %}>Highest</option>
+            </select>
+        </label><br><br>
+
+        <button type="submit">Update Charts</button>
+    </fieldset>
+</form>
+
+
+<h2>1. Number of Products per Ingredient</h2>
+<div>{{ graph1|safe }}</div>
+
+<h2>2. Number of Orders per Person</h2>
+<div>{{ graph2|safe }}</div>
+
+<h2>3. Total Spending per Person</h2>
+<div>{{ graph3|safe }}</div>
+
+<h2>4. Number of Orders per Product</h2>
+<div>{{ graph4|safe }}</div>
+
+<h2>5. Average Product Rating</h2>
+<div>{{ graph5|safe }}</div>
+
+<h2>6. Sales by Category</h2>
+<div>{{ graph6|safe }}</div>
+
+</body>
+</html>
