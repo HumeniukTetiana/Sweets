@@ -18,7 +18,7 @@ def dashboard_bokeh(request):
     params = request.GET.urlencode()
 
     url = f"http://localhost:8000/statistic/ingredients-products-dashboard/?{params}"
-    response = requests.get(url)
+    response = requests.get(url, auth=('test11', 'Q1wertyuI'))
     df = pd.DataFrame(response.json())
     df = df[df["product_count"] >= ingredient_min_count]
     df = df.sort_values("product_count", ascending=True)
@@ -27,7 +27,7 @@ def dashboard_bokeh(request):
     p1.hbar(y='ingredient_name', right='product_count', height=0.7, source=source1)
 
     url = f"http://localhost:8000/statistic/person-orders-dashboard/?{params}"
-    response = requests.get(url)
+    response = requests.get(url, auth=('test11', 'Q1wertyuI'))
     df = pd.DataFrame(response.json())
     df["full_name"] = (df["first_name"] + " " + df["last_name"]).str.strip()
     df = df.sort_values("order_count", ascending=(order_sort == "asc"))
@@ -37,38 +37,38 @@ def dashboard_bokeh(request):
     p2.xaxis.major_label_orientation = pi/4
 
     url = f"http://localhost:8000/statistic/person-total-spent-dashboard/?{params}"
-    response = requests.get(url)
+    response = requests.get(url, auth=('test11', 'Q1wertyuI'))
     df = pd.DataFrame(response.json())
     df["total_spent"] = pd.to_numeric(df["total_spent"])
     df = df[df["total_spent"] >= spent_min].sort_values("total_spent", ascending=False)
     df["full_name"] = (df["first_name"] + " " + df["last_name"]).str.strip()
     source3 = ColumnDataSource(df)
-    p3 = figure(x_range=list(df["full_name"]), height=400, title="Total Spending per Person (Filtered)")
+    p3 = figure(x_range=list(df["full_name"]), height=400, title="Total Spending per Person")
     p3.line(x='full_name', y='total_spent', line_width=2, source=source3)
     p3.circle(x='full_name', y='total_spent', size=8, source=source3, color="green")
     p3.xaxis.major_label_orientation = pi/4
 
     url = f"http://localhost:8000/statistic/product-total-quantity-dashboard/?{params}"
-    response = requests.get(url)
+    response = requests.get(url, auth=('test11', 'Q1wertyuI'))
     df = pd.DataFrame(response.json())
     df = df[df['total_quantity_ordered'] >= quantity_min]
     source4 = ColumnDataSource(df)
     p4 = figure(x_range=list(df['product_name']), height=400, title="Total Quantity of Ordered Products")
-    p4.circle(x='product_name', y='total_quantity_ordered', size=12, source=source4, color="navy", alpha=0.7)
+    p4.circle(x='product_name', y='total_quantity_ordered', size=12, source=source4, color="navy", alpha=1)
     p4.xaxis.major_label_orientation = pi/4
 
     url = f"http://localhost:8000/statistic/product-average-rating-dashboard/?{params}"
-    response = requests.get(url)
+    response = requests.get(url, auth=('test11', 'Q1wertyuI'))
     df = pd.DataFrame(response.json())
     df["avg_rating"] = pd.to_numeric(df["avg_rating"])
     df = df.sort_values(by="avg_rating", ascending=(rating_sort == "asc"))
     source5 = ColumnDataSource(df)
-    p5 = figure(x_range=list(df['product_name']), height=400, title="Average Product Ratings (Filtered)")
-    p5.step(x='product_name', y='avg_rating', mode="after", source=source5, line_width=2, color="orange")
+    p5 = figure(x_range=list(df['product_name']), height=400, title="Average Product Ratings")
+    p5.step(x='product_name', y='avg_rating', mode="center", source=source5, line_width=2, color="orange")
     p5.xaxis.major_label_orientation = pi/4
 
     url = f"http://localhost:8000/statistic/sales-by-category-dashboard/?{params}"
-    response = requests.get(url)
+    response = requests.get(url, auth=('test11', 'Q1wertyuI'))
     df = pd.DataFrame(response.json())
     df = df.sort_values("total_sales", ascending=False)
     df["angle"] = df["total_sales"] / df["total_sales"].sum() * 2 * pi

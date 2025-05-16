@@ -11,7 +11,7 @@ def dashboard_plotly(request):
     quantity_min = int(request.GET.get("quantity_min", 0))
     rating_sort = request.GET.get("rating_sort", "desc")
 
-    response = requests.get('http://localhost:8000/statistic/ingredients-products-dashboard/')
+    response = requests.get('http://localhost:8000/statistic/ingredients-products-dashboard/', auth=('test11', 'Q1wertyuI'))
     df = pd.DataFrame(response.json())
     df = df[df["product_count"] >= ingredient_min_count]
 
@@ -22,7 +22,7 @@ def dashboard_plotly(request):
     fig.update_layout(yaxis=dict(categoryorder='total ascending'))
     graph1 = fig.to_html(full_html=False)
 
-    response = requests.get('http://localhost:8000/statistic/person-orders-dashboard/')
+    response = requests.get('http://localhost:8000/statistic/person-orders-dashboard/', auth=('test11', 'Q1wertyuI'))
     df = pd.DataFrame(response.json())
     df['full_name'] = df['first_name'] + ' ' + df['last_name']
     df = df.sort_values("order_count", ascending=(order_sort == "asc"))
@@ -31,7 +31,7 @@ def dashboard_plotly(request):
     fig.update_layout(xaxis_title='Person', yaxis_title='Number of Orders', xaxis_tickangle=-45)
     graph2 = fig.to_html(full_html=False)
 
-    response = requests.get('http://localhost:8000/statistic/person-total-spent-dashboard/')
+    response = requests.get('http://localhost:8000/statistic/person-total-spent-dashboard/', auth=('test11', 'Q1wertyuI'))
     df = pd.DataFrame(response.json())
     df['full_name'] = df['first_name'] + ' ' + df['last_name']
     df = df[df['total_spent'] >= spent_min]
@@ -40,7 +40,7 @@ def dashboard_plotly(request):
     fig.update_layout(xaxis_title='Person', yaxis_title='Spent, UAH', xaxis_tickangle=-45)
     graph3 = fig.to_html(full_html=False)
 
-    response = requests.get('http://localhost:8000/statistic/product-total-quantity-dashboard/')
+    response = requests.get('http://localhost:8000/statistic/product-total-quantity-dashboard/', auth=('test11', 'Q1wertyuI'))
     df = pd.DataFrame(response.json())
     df = df[df['total_quantity_ordered'] >= quantity_min]
 
@@ -49,7 +49,7 @@ def dashboard_plotly(request):
     fig.update_layout(xaxis_title='Quantity', yaxis_title='Product', yaxis=dict(categoryorder='total ascending'))
     graph4 = fig.to_html(full_html=False)
 
-    response = requests.get('http://localhost:8000/statistic/product-average-rating-dashboard/')
+    response = requests.get('http://localhost:8000/statistic/product-average-rating-dashboard/', auth=('test11', 'Q1wertyuI'))
     df = pd.DataFrame(response.json())
     df = df.sort_values("avg_rating", ascending=(rating_sort == "asc"))
 
@@ -57,7 +57,7 @@ def dashboard_plotly(request):
     fig.update_layout(xaxis_title='Product', yaxis_title='Average Rating', xaxis_tickangle=-45)
     graph5 = fig.to_html(full_html=False)
 
-    response = requests.get('http://localhost:8000/statistic/sales-by-category-dashboard/')
+    response = requests.get('http://localhost:8000/statistic/sales-by-category-dashboard/', auth=('test11', 'Q1wertyuI'))
     df = pd.DataFrame(response.json())
 
     fig = px.pie(df, values='total_sales', names='category_name', title='Sales by Category')
