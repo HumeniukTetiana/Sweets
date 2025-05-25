@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ingredient List</title>
+</head>
+<body>
+    <h1>Ingredients</h1>
+
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Action</th>
+        </tr>
+        {% for ingredient in ingredients %}
+        <tr>
+            <td>{{ ingredient.id }}</td>
+            <td>{{ ingredient.ingredient_name }}</td>
+            <td>
+                <form method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="ingredient_id" value="{{ ingredient.id }}">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
