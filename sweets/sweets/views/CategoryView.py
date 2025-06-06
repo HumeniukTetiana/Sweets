@@ -1,6 +1,10 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+
 
 from sweets.serializers import CategorySerializer
 from sweets import repositories
@@ -8,6 +12,8 @@ from sweets import repositories
 repository = repositories.CategoryRepository()
 
 @api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def get_all_categories(request):
     categories = repository.get_all()
     serializer = CategorySerializer(categories, many=True)
@@ -15,13 +21,14 @@ def get_all_categories(request):
 
 
 @api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def get_category_by_id(request, pk):
     category = repository.get_by_id(pk)
     if not category:
         return Response({'error': 'Not found'}, status=status.HTTP_404_NOT_FOUND)
     serializer = CategorySerializer(category)
     return Response(serializer.data)
-
 
 @api_view(['POST'])
 def create_category(request):

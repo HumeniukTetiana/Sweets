@@ -1,0 +1,26 @@
+/* src/styles/header.css */
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: #8b5e3c;
+  color: white;
+}
+
+.header-buttons a {
+  margin-left: 20px;
+  text-decoration: none;
+  color: #fff3e6;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.header-buttons a:hover {
+  color: #ffd4aa;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}

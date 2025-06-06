@@ -3,6 +3,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from sweets.serializers import ProductSerializer
 from sweets import repositories
+from sweets.models import Product
+from django.views.decorators.http import require_GET
 
 repository = repositories.ProductRepository()
 
@@ -18,6 +20,14 @@ def get_product_by_id(request, pk):
     if not product:
         return Response({'error': 'Not found'}, status=status.HTTP_404_NOT_FOUND)
     serializer = ProductSerializer(product)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+#@permission_classes([IsAuthenticated])
+# @require_GET
+def get_products_by_category(request, category_id):
+    products = Product.objects.filter(category_id=category_id)
+    serializer = ProductSerializer(products, many=True)
     return Response(serializer.data)
 
 @api_view(['POST'])

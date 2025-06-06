@@ -1,0 +1,94 @@
+:root {
+  --peach-light: #ffe5b4;
+  --peach-cream: #fff7ef;
+  --peach-dark: #f4c28d;
+  --brown: #8b5e3c;
+  --brown-dark: #5c3a21;
+  --text-dark: #3b2f2f;
+  --shadow-light: rgba(140, 90, 30, 0.1);
+  --shadow-dark: rgba(0, 0, 0, 0.12);
+  --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.product-details-container {
+  padding: 40px 40px;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--peach-cream), var(--peach-light), var(--peach-dark));
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  font-family: var(--font-family);
+}
+
+.product-card-details {
+  background: #fff;
+  border-radius: 24px 0 0 24px;
+  padding: 40px 36px;
+  width: 360px;
+  box-shadow: 4px 0 12px var(--shadow-light), 2px 0 8px var(--shadow-dark);
+  border-left: 12px solid var(--peach-dark);
+  color: var(--text-dark);
+  transition: box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.product-card-details:hover {
+  box-shadow: 6px 0 24px var(--shadow-light), 4px 0 16px var(--shadow-dark);
+}
+
+.product-card-details h2 {
+  font-size: 2.4rem;
+  color: var(--brown-dark);
+  margin-bottom: 8px;
+  font-weight: 800;
+}
+
+.product-card-details p {
+  font-size: 1.3rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.product-card-details p strong {
+  color: var(--brown-dark);
+}
+
+.buttons-container {
+  margin-top: 24px;
+  display: flex;
+  gap: 16px;
+}
+
+button {
+  flex: 1;
+  padding: 12px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  background-color: var(--peach-dark);
+  color: white;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button:hover {
+  background-color: var(--brown-dark);
+  color: white;
+}
+
+.product-details-container .error {
+  color: red;
+  font-weight: 700;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.product-details-container > div {
+  font-size: 1.5rem;
+  color: var(--brown-dark);
+  font-weight: 600;
+  text-align: center;
+}

@@ -16,7 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from sweets.views import CategoryView, FullOrderView, IngredientView, OrderDetailsView, PersonView, ProductIngredientView, ProductView, ReviewView, IngredientListView
+# from sweets.views.MainView import get_products_by_category
+from .views.ProductView import get_products_by_category
+from sweets.views import CategoryView, FullOrderView, IngredientView, OrderDetailsView, PersonView, ProductIngredientView, ReviewView, IngredientListView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,6 +28,9 @@ urlpatterns = [
     path('statistic/', include('statistic.urls')),
     path('parallel_db/', include('parallel_db.urls')),
 
+
+
+    path('categories/products/<int:category_id>/', get_products_by_category, name='products-by-category'),
     path('categories/', CategoryView.get_all_categories, name='get_all_categories'),
     path('categories/<int:pk>/', CategoryView.get_category_by_id, name='get_category_by_id'),
     path('categories/create/', CategoryView.create_category, name='create_category'),
@@ -62,11 +67,11 @@ urlpatterns = [
     path('product-ingredients/update/<int:pk>/', ProductIngredientView.update_product_ingredient, name='update_product_ingredient'),
     path('product-ingredients/delete/<int:pk>/', ProductIngredientView.delete_product_ingredient, name='delete_product_ingredient'),
 
-    path('products/', ProductView.get_all_products, name='get_all_products'),
-    path('products/<int:pk>/', ProductView.get_product_by_id, name='get_product_by_id'),
-    path('products/create/', ProductView.create_product, name='create_product'),
-    path('products/update/<int:pk>/', ProductView.update_product, name='update_product'),
-    path('products/delete/<int:pk>/', ProductView.delete_product, name='delete_product'),
+    # path('products/', ProductView.get_all_products, name='get_all_products'),
+    # path('products/<int:pk>/', ProductView.get_product_by_id, name='get_product_by_id'),
+    # path('products/create/', ProductView.create_product, name='create_product'),
+    # path('products/update/<int:pk>/', ProductView.update_product, name='update_product'),
+    # path('products/delete/<int:pk>/', ProductView.delete_product, name='delete_product'),
 
     path('reviews/', ReviewView.get_all_reviews, name='get_all_reviews'),
     path('reviews/<int:pk>/', ReviewView.get_review_by_id, name='get_review_by_id'),

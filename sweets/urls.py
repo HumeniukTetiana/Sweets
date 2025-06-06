@@ -20,7 +20,7 @@ from sweets.views import CategoryView, FullOrderView, IngredientView, OrderDetai
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/auth/', include('authentication.urls')),
+    path('auth/', include('authentication.urls')),
     path('product/', include('products.urls')),
     path('ingredients/list/', IngredientListView.ingredient_list, name='ingredient_list'),
     path('statistic/', include('statistic.urls')),
@@ -67,6 +67,7 @@ urlpatterns = [
     path('products/create/', ProductView.create_product, name='create_product'),
     path('products/update/<int:pk>/', ProductView.update_product, name='update_product'),
     path('products/delete/<int:pk>/', ProductView.delete_product, name='delete_product'),
+    path('categories/<int:category_id>/products/', ProductView.get_products_by_category, name='products-by-category'),
 
     path('reviews/', ReviewView.get_all_reviews, name='get_all_reviews'),
     path('reviews/<int:pk>/', ReviewView.get_review_by_id, name='get_review_by_id'),

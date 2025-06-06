@@ -1,0 +1,144 @@
+:root {
+  --peach-light: #ffe5b4;
+  --peach-dark: #f4c28d;
+  --brown: #8b5e3c;
+  --brown-dark: #5c3a21;
+  --text-dark: #3b2f2f;
+}
+
+/* Header */
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--brown);
+  color: white;
+  padding: 15px 30px;
+}
+
+.main-header .logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.main-header nav a {
+  color: white;
+  margin-left: 20px;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.main-header nav a:hover {
+  text-decoration: underline;
+}
+
+/* Hero */
+.hero-section {
+  background-color: var(--peach-dark);
+  color: var(--brown-dark);
+  text-align: center;
+  padding: 50px 20px;
+  border-radius: 12px;
+  margin: 30px 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.hero-section h1 {
+  font-size: 2.8rem;
+  margin-bottom: 10px;
+}
+
+.hero-section p {
+  font-size: 1.3rem;
+}
+
+/* Category Container */
+.category-container {
+  padding: 20px;
+  min-height: 100vh;
+  background-color: var(--peach-light);
+  box-sizing: border-box;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 20px;
+  height: calc(100vh - 120px);
+}
+
+/* Category Cards */
+.category-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  animation: fadeInUp 0.4s ease forwards;
+  opacity: 0;
+  transform: translateY(20px);
+  color: var(--brown-dark);
+  transition: transform 0.2s ease;
+  /* фон видалено, щоб показати зображення */
+}
+
+/* Фонове зображення */
+.category-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--bg-img);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: brightness(0.65); /* Темніше зображення */
+  transition: filter 0.3s ease;
+  z-index: 1;
+}
+
+/* Ховер — висвітлення */
+.category-card:hover::before {
+  filter: brightness(1); /* Яскраве, без затемнення */
+}
+
+.category-card:hover {
+  transform: scale(1.03);
+}
+
+/* Текст */
+.category-card span {
+  position: relative;
+  z-index: 2;
+  font-size: 2.5rem;            /* Збільшений текст */
+  font-weight: 700;
+  color: var(--peach-light);    /* Світло персиковий колір */
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6); /* Тінь для читабельності */
+  background-color: transparent; /* Без фону */
+  padding: 0;                    /* Без паддінгів */
+  border-radius: 0;             /* Без скруглень */
+  text-align: center;
+  max-width: 90%;
+  word-wrap: break-word;
+}
+
+
+/* Footer */
+.main-footer {
+  text-align: center;
+  padding: 20px;
+  background-color: var(--brown-dark);
+  color: var(--peach-light);
+  margin-top: 40px;
+}
+
+/* Animation */
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

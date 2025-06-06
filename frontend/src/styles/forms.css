@@ -1,0 +1,55 @@
+/* Уніфікуємо box-sizing — дуже важливо для однакової ширини */
+* {
+  box-sizing: border-box;
+}
+
+/* Контейнер форми */
+form {
+  background-color: #fff5ec;
+  padding: 2rem;
+  max-width: 400px;
+  margin: 5rem auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(87, 59, 37, 0.2);
+  border: 1px solid #e0c6b3;
+}
+
+/* Поля вводу та кнопка: однакова ширина */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+button {
+  width: 100%;               /* Всі на 100% */
+  display: block;            /* Запобігає inline-впливу */
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+/* Поля вводу */
+input {
+  border: 1px solid #d6b8a5;
+  background-color: #fffaf7;
+  transition: border-color 0.3s;
+}
+
+input:focus {
+  border-color: #c08c68;
+  background-color: #fff1e8;
+  outline: none;
+}
+
+/* Кнопка */
+button {
+  background-color: #8b5e3c;
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #a66e4a;
+}
